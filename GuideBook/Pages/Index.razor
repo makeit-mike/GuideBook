@@ -1,7 +1,175 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<h1>C# Best Practices</h1>
 
-Welcome to your new app.
+A compiled list on the best ways to develop C#.
+Use cases: 
+<ul>
+    <li>Code Reviews.</li>
+    <li>Refreshing memory on standards or implementation.</li>
+    <li>View basic C# theory with code.</li>
+</ul>
+<br />
+<button id="btnNaming" @onclick="@btnNaming_OnClick" class="btn btn-dark btn-lg buttonConventions" >Naming Conventions</button>
+<div class="Conventions" hidden="@showNaming">
+    <br />
+    <ul>
+        <li>Use descriptive names that explicitly explain what something does</li>
+        <li>camelCase- local variables, fields, parameters, controls, control commands</li>
+        <li>UpperCase- Method names, Class names, Namespaces, Files, Folders </li>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    </ul>
+    <CodeSnippet>
+        //GOOD
+        var currentPerformanceCounterCategory = new System.Diagnostics.PerformanceCounterCategory();
+
+        public static void btnAddToCart_OnClick(sender, args)
+        {
+            UpdateCart(1);
+        }
+
+        public static void UpdateCart(int numberOfItems)
+        {
+            //some void functionality
+        }
+        //BAD (x does nothing but say "I'm lazy" or "I don't know what I am doing")
+        var x = 32.4;
+        public static   void update     //random amount of spaces? compiles fine but looks inconsistent
+    </CodeSnippet>
+</div>
+<br />
+<button id="btnLayout" @onclick="@btnLayout_OnClick" class="btn btn-dark btn-lg buttonConventions" >Layout Conventions</button>
+<div class="Conventions" hidden="@showLayout">
+    <br />
+    <ul>
+        <li>Only one statement per line</li>
+        <li>Befriend curly braces </li>
+        <li>Do not have large sections of empty lines</li>
+        <li>Use one blank line max between important declarations and methods</li>
+        <li>In most cases, column limit should not exceed 100 characters</li>
+        <li>use a space after if/for/foreach/while/... and after commas</li>
+    </ul>
+    <CodeSnippet>
+        namespace MyNamespace { ... }                       // Namespaces are PascalCase.
+        public interface IMyInterface { ... }               // Interfaces start with 'I'
+
+        public enum MyEnum {                                // Enumerations are PascalCase.
+            Yes,                                            // Enumerators are PascalCase.
+            No,                                             // Enumerators are indented.
+        }
+
+        public class MyClass { ... }                        // Classes are PascalCase.
+        public int Foo = 0;                                 // Public member variables are PascalCase.
+        int bar = 1;                                        // Local member variables are camelCase.
+
+        class MyClassName
+        {
+            int param1 {get; set;}
+        }
+        //Line breaks before new methods/functions/classes are recommended.
+        MyClassName myClassName = new MyClassName()         // Class objects are the class name as camelCase.
+        {
+            param1 = 21         //how to set class objects on initialization.
+        };
+
+
+        int[] myIntArr = { 1, 2, 3, 4, };                   //When you know the objects in an array, use this simplified constructor.
+
+        if (result != null)                                 //Use proper spacing on condition blocks
+        {
+            ...
+        }
+        else if (result == true)                            //No line breaks between conditions.
+        {
+            ... 
+        }
+
+        int myCondition = myBool ? 1 : 0;                           //inline ternary operators are encouraged when setting static values
+
+        //BAD! this inline declaration is doing too much work. This is hard to code review.
+        int myUserID = DoesAccountExist() == false ? Convert.ToInt32(AddAccountAndReturnID(myUserName).ToString()) : Convert.ToInt32(GetUserID(myUserName).ToString());
+
+        Func&lt;int, int&gt; increment = x => x + 1;                //inline lambdas should not use brackets or braces for easy reading.
+
+
+        Func&lt;int, int, long&gt; difference1 = (x, y) => {        //complex lambdas should use brackets, braces, and indentation.
+            long diff = (long)x - y;
+            return diff >= 0 ? diff : -diff;
+        };
+
+        //Avoid naming anything over 20 characters.   //Comments for a method should be placed above the method
+        void AVeryLongAndUnpleasantMethodNameMayBeDescriptiveButIsNotHelpful(int myInt)
+        {
+            //comments describing inner functionality shoud go above the line it is describing.
+            int? myNullableInt = myInt;     //for short desc, inline is okay as well.
+            ...
+        }
+    </CodeSnippet>
+</div>
+
+<br />
+<button id="btnCoding" @onclick="@btnCoding_OnClick" class="btn btn-dark btn-lg buttonConventions" >Coding Conventions</button>
+<div class="Conventions" hidden="@showCoding">
+    <br />
+    <h3>the var keyword</h3>
+
+    <p>C# is statically typed, meaning when you code 'var x = 12;', x will ALWAYS have to behave like a 32 bit Integer.</p>
+    <p>This is unlike JavaScript, where var x = 12; can be reassigned to "string content" on the fly.</p>
+
+    <ul>
+        <li>var usage is encouraged anytime it aids readability to other coders.</li>
+        <li>camelCase- local variables, fields, parameters, controls, control commands</li>
+        <li>UpperCase- Method names, Class names, Namespaces, Files, Folders </li>
+
+    </ul>
+    <CodeSnippet>
+        //GOOD
+        var apple = new Apple();        //It is very obvious what this apple object is.
+        var request = Factory.Create&lt;HttpRequest&gt;(); //here the actual object type would be unuseful for the coder/reviewer.
+
+        //BAD
+        var success = true;                                 //if the variable is a basic type, you might as well dictate the type. Var is only adding complexity in this case.
+        var number = 12 * SomeMethodThatReturnsFloat();     //At a quick glance the reviewer would need to decide "is this supposed to be an int or a float?"
+        var myList = GetListOfItems();                      //Is this a list of strings? list of item objects? Or is it an Array? there is no way to know at a glance.
+    </CodeSnippet>
+
+    <h3>SQL Method Calls (USING)</h3>
+    <p>SQLConnections are pooled by .NET so they are generally non-expensive to rebuild every time they are needed.
+        Where this becomes a problem is when a connection is not closed (this can cause many problems, most notably decrease in speed and security).
+     </p>
+    <CodeSnippet>
+        using (SqlConnection conn = new SqlConnection(...))
+        {
+            using(SqlCommand cmd = new SqlCommand(..., conn))
+            {
+                conn.Open();
+                using(DataReader dr = cmd.ExecuteReader())  // or load a DataTable, ExecuteScalar, etc.    
+                {
+                        ...
+                {
+                conn.Close(); //This isnt *needed* since anything in a USING statement is always Disposed of when the program leaves that scope
+            }
+        } // At this point in the program, anything local inside this call is disposed, including the open connection.
+    </CodeSnippet>
+</div>
+
+
+
+@code {
+    private bool showLayout { get; set; } = true;
+    private void btnLayout_OnClick()
+    {
+        showLayout = !showLayout;
+    }
+
+    private bool showNaming { get; set; } = true;
+    private void btnNaming_OnClick()
+    {
+        showNaming = !showNaming;
+    }
+    private bool showCoding { get; set; } = true;
+    private void btnCoding_OnClick()
+    {
+        showCoding = !showCoding;
+    }
+}

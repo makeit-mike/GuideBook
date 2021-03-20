@@ -1,15 +1,26 @@
 ﻿@inherits LayoutComponentBase
-
+@inject IJSRuntime JS;
 <div class="sidebar">
     <NavMenu />
 </div>
 
 <div class="main">
     <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+        <button class="btn btn-primary" @onclick="Alert"> About </button>
     </div>
 
     <div class="content px-4">
         @Body
     </div>
 </div>
+@code {
+
+    const string message = "";
+
+    private string[] args = { message };
+
+    private async Task Alert()
+    {
+        await JS.InvokeAsync<string>("showAbout", args);
+    }
+}
