@@ -14,11 +14,13 @@
         <li>Use one blank line max between important declarations and methods</li>
         <li>In most cases, column limit should not exceed 100 characters</li>
         <li>use a space after if/for/foreach/while/... and after commas</li>
+        <li>avoid use of Hungarian naming scheme: int iValue = 2; string strCaller = "John";</li>
+        <li>Instead, use descriptive naming: int degreeFarenheight = 2; string lastCaller = "John";</li>
     </ul>
     <CodeSnippet>
         namespace MyNamespace { ... }                       // Namespaces are PascalCase.
 
-        const int MY_INT = 3;                               // Constants 
+        const int MyInt= 3;                                 // Constants have no real set case. But I feel PascalCase is good.
 
         public interface IMyInterface { ... }               // Interfaces start with 'I'
 
