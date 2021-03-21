@@ -1,0 +1,108 @@
+﻿@page "/Snippets"
+
+<h1>Snippets</h1>
+<p>
+    This is actual code snippets that should be usable in any modern C# project.<br />
+    If these do not work, you should check your NuGet packages, or send me a message/create an Issue and I will let you know what dll's are needed.
+</p>
+
+<h3> Switch Case Snippets </h3>
+    <CodeSnippet>
+    // Set variable with switch without formal switch statement.
+    // Standard
+    string finalValue;
+    string myString = "test";
+    switch (myString)
+    {
+        case "not test":
+            finalValue = "Production";
+            break;
+        case "test":
+        default:
+            break;
+    }
+    //standard as lamda (preferred when assigning)
+    var resultText = switchValue switch
+    {
+        var x when
+            x == 1 ||
+            x == 2 ||
+            x == 3 => "one to three",
+        4 => "four",
+        5 => "five",
+        _ => "unknown",
+    };
+    //More consise with normal 'if' conditions. (More dependent on up to date projects)
+    var resultText = switchValue switch
+    {
+        var x when x > 0 && x &lt; 4 => "one to three",
+        4 => "four",
+        5 => "five",
+        _ => "unknown",
+    };
+
+    </CodeSnippet>
+    <h3>SQL Snippets</h3>
+    <CodeSnippet>
+    using System.Data;
+    using System.Data.SqlClient;
+    using (SqlConnection con = new SqlConnection(dc.Con)) 
+    {
+        using (SqlCommand cmd = new SqlCommand("sp_Add_contact", con)) 
+        {
+          cmd.CommandType = CommandType.StoredProcedure;
+
+          cmd.Parameters.Add("@@FirstName", SqlDbType.VarChar).Value = txtFirstName.Text;
+          cmd.Parameters.Add("@@LastName", SqlDbType.Int).Value = txtLastName.Text;
+
+          con.Open();
+          cmd.ExecuteNonQuery();
+        }
+    }
+    //SQL Command GET DataTable
+    internal static void GetDataTableFromSQL()
+    {
+        DataTable dt = new DataTable();
+        using (SqlConnection con = new SqlConnection(constring))
+        {
+            using (SqlCommand cmd = new SqlCommand("sp_Add_contact", con)) 
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@@FirstName", SqlDbType.VarChar).Value = txtFirstName.Text;
+                cmd.Parameters.Add("@@LastName", SqlDbType.Int).Value = txtLastName.Text;
+                using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                {
+                    sda.Fill(dt);
+                }
+            }
+        }
+        return dt;
+    }
+    internal static string GetOutputFromSQL()
+    {
+        string output = "";
+        using (SqlConnection con = new SqlConnection(constring))
+        {
+            using (SqlCommand cmd = new SqlCommand("sp_Add_contact", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@@FirstName", SqlDbType.VarChar).Value = txtFirstName.Text;
+                cmd.Parameters.Add("@@LastName", SqlDbType.Int).Value = txtLastName.Text;
+                cmd.Parameters["@@SomeOutput"].Direction = ParameterDirection.Output;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                output = cmd.Parameters["@@SomeOutput"].Value.ToString();
+                try { output = output.Replace("&amp;nbsp;",""); } catch {}
+                con.Close();
+            }
+        }
+        return output;
+    }
+
+</CodeSnippet>
+
+@code {
+
+}
