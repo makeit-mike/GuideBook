@@ -26,7 +26,11 @@ html, body {
 a, .btn-link {
     color: #0366d6;
 }
-
+.hljs {
+    border-radius: 10px !important;
+    width: fit-content !important;
+    padding-right: 75px !important;
+}
 
 .buttonConventions {
     width: 240px;
@@ -36,7 +40,7 @@ a, .btn-link {
 
 .Conventions {
     animation: fadeIn 2s !important;
-    animation-fill-mode: both !important;
+    animation-fill-mode: forwards !important;
 }
 
 @keyframes fadeIn {
@@ -85,13 +89,15 @@ app {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
+.navBtns{
+    width: fit-content !important;
+}
 .sidebar {
-    background-image: linear-gradient( 180deg, rgb(116 116 116) 0%, #131313 70%);
+    background-color: #3c3c3c;
 }
 
     .sidebar .top-row {
-        background-color: rgba(0,0,0,0.4);
+        background-color: #3c3c3c;
     }
 
     .sidebar .navbar-brand {
@@ -176,7 +182,7 @@ app {
     top: 0.5rem;
 }
 
-@media (max-width: 767.98px) {
+@mediamedia (max-width: 2000.98px) {
     .main .top-row:not(.auth) {
         display: none;
     }
@@ -190,7 +196,7 @@ app {
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1999px) {
     app {
         flex-direction: row;
     }
