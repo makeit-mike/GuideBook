@@ -31,7 +31,13 @@ a, .btn-link {
     width: fit-content !important;
     padding-right: 75px !important;
 }
-
+/*Use as a class on a P tag below a header tag*/ 
+.conventionExplanation { 
+    max-width: 600px;
+    background-color: #ececec;
+    border-radius: 5px;
+    padding: 5px;
+}
 .buttonConventions {
     width: 240px;
     height: 45px;
@@ -89,8 +95,16 @@ app {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.navDiv {
+    width: 200px;
+}
 .navBtns{
     width: fit-content !important;
+}
+.navLbl {
+    width: 100px;
+    text-align: left;
+    margin-top: 5px;
 }
 .sidebar {
     background-color: #3c3c3c;
